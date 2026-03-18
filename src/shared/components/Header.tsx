@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import logo from '@assets/logo.png';
 
 export function Header() {
     return (
@@ -13,9 +14,10 @@ export function Header() {
         }}
             className="bg-background"
         >
-            <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Link to="/" style={{ textDecoration: 'none', color: 'inherit', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <img src={logo} alt="PH Salary Tax Calculator Logo" style={{ height: '40px' }} />
                 <span style={{ fontSize: '1.25rem', fontWeight: 700, letterSpacing: '0.01em' }}>
-                    <span className='text-primary'> Income </span> Tax Calculator
+                    <span className='text-primary'> PH Salary </span> Tax Calculator
                 </span>
             </Link>
 
