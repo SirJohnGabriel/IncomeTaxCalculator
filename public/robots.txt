@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://taxphincomecalculator.netlify.app/sitemap.xml
