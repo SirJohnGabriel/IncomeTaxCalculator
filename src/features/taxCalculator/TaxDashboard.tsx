@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import type { Salary, EmploymentType, TaxScheme } from './types/Salary.types';
 import { UseTaxCalculator } from './hooks/UseTaxCalculator';
 import { Badge } from '@/shared/components/ui/badge';
-import logo from '@assets/logo.png';
+import logo from '@assets/logo_phitc_2.png';
 import { Wallet, TrendingUp, ArrowDownCircle, CalendarDays, Sun, Moon } from 'lucide-react';
 import { InputCard } from './components/InputCard';
 import { BreakdownChartCard } from './components/BreakdownChartCard';
@@ -147,7 +147,7 @@ export function TaxDashboard() {
 
             <header className="flex items-center justify-between px-4 md:px-8 py-5">
                 <div className="flex items-center gap-2.5">
-                    <img src={logo} alt="Logo" className="h-8" />
+                    <img src={logo} alt="Logo" className="h-10" />
                     <span className="text-[1.05rem] font-bold text-white tracking-tight">
                         PH Income{' '}
                         <span className="text-dash-green">Tax Calculator</span>
