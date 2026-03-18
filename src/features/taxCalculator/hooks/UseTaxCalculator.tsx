@@ -1,5 +1,5 @@
 import sssData from '../../../assets/sss.csv?raw';
-import type { Salary } from "../types/Salary.types";
+import type { Salary, TaxScheme } from "../types/Salary.types";
 
 export function UseTaxCalculator() {
     const PhilHealthCalculator = (salary: number): [number, number] => {
@@ -71,6 +71,8 @@ export function UseTaxCalculator() {
         const netSalary = salary - totalDeductions + untaxableIncome;
 
         return {
+            EmploymentType: 'employed',
+            TaxScheme: 'graduated',
             AnnualSalary: salary * 12,
             AnnualNetSalary: netSalary * 12,
             AnnualGrossSalary: (salary + untaxableIncome) * 12,
@@ -88,5 +90,54 @@ export function UseTaxCalculator() {
         };
     };
 
-    return { IncomeTaxCalculator };
+    const SelfEmployedTaxCalculator = (income: number, taxScheme: TaxScheme): Salary => {
+        const annualIncome = income * 12;
+
+        // If 8% flat rate but annual income exceeds ₱3M threshold, force graduated
+        const effectiveScheme: TaxScheme =
+            taxScheme === 'flat8' && annualIncome > 3_000_000 ? 'graduated' : taxScheme;
+
+        // PhilHealth: self-employed pays full 5% (no ER to split with), capped at ₱5,000/month
+        const philhealthTotal = Math.min(income * 0.05, 5000);
+
+        // SSS: self-employed pays both EE and ER shares
+        const [sssEE, sssER] = SssCalculator(income);
+
+        // Pag-IBIG: self-employed pays both EE and ER shares (2%), capped at ₱400/month
+        const pagibig = Math.min(income * 0.02, 400);
+
+        // BIR income tax
+        let bir: number;
+        if (effectiveScheme === 'flat8') {
+            // 8% of gross income in excess of ₱250,000 annual exemption
+            bir = Math.max(annualIncome - 250_000, 0) * 0.08 / 12;
+        } else {
+            // Graduated rates — same progressive brackets as employed
+            bir = BirCalculator(income);
+        }
+
+        const totalDeductions = philhealthTotal + sssEE + sssER + pagibig + bir;
+        const netIncome = income - totalDeductions;
+
+        return {
+            EmploymentType: 'self-employed',
+            TaxScheme: effectiveScheme,
+            AnnualSalary: annualIncome,
+            AnnualNetSalary: netIncome * 12,
+            AnnualGrossSalary: annualIncome,
+            NetSalary: netIncome,
+            GrossSalary: income,
+            UntaxableIncome: 0,
+            PhilhealthEmployeeContribution: philhealthTotal,
+            PhilhealthEmployerContribution: 0,
+            SssEmployeeContribution: sssEE + sssER,
+            SssEmployerContribution: 0,
+            PagibigContribution: pagibig,
+            BirContribution: bir,
+            TotalDeductions: totalDeductions,
+            EmployerContributions: 0,
+        };
+    };
+
+    return { IncomeTaxCalculator, SelfEmployedTaxCalculator };
 }
