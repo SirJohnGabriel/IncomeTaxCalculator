@@ -12,7 +12,7 @@ export function Header() {
             height: '64px',
             boxShadow: '0 2px 4px rgba(0,0,0,0.3)',
         }}
-            className="bg-background"
+            className="bg-background-alt"
         >
             <Link to="/" style={{ textDecoration: 'none', color: 'inherit', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <img src={logo} alt="PH Salary Tax Calculator Logo" style={{ height: '40px' }} />
