@@ -3,7 +3,7 @@ import type { Salary, EmploymentType, TaxScheme } from './types/Salary.types';
 import { UseTaxCalculator } from './hooks/UseTaxCalculator';
 import { Badge } from '@/shared/components/ui/badge';
 import logo from '@assets/logo.png';
-import { Wallet, TrendingUp, ArrowDownCircle, CalendarDays } from 'lucide-react';
+import { Wallet, TrendingUp, ArrowDownCircle, CalendarDays, Sun, Moon } from 'lucide-react';
 import { InputCard } from './components/InputCard';
 import { BreakdownChartCard } from './components/BreakdownChartCard';
 import { MetricCard } from './components/MetricCard';
@@ -13,8 +13,8 @@ import { ProjectionsCard } from './components/ProjectionsCard';
 
 const PIE_SLICES_EMPLOYED = [
     { name: 'Basic Salary After Taxes', color: '#7EC341' },
-    { name: 'Deductions',               color: '#B7EE7C' },
-    { name: 'Allowances',               color: '#D8F8B4' },
+    { name: 'Deductions', color: '#B7EE7C' },
+    { name: 'Allowances', color: '#D8F8B4' },
 ];
 
 const PIE_SLICES_SELF = [
@@ -79,6 +79,15 @@ function AdBanner({ slot }: { slot: string }) {
 export function TaxDashboard() {
     const { IncomeTaxCalculator, SelfEmployedTaxCalculator } = UseTaxCalculator();
 
+    const [isDark, setIsDark] = useState(() => {
+        const saved = localStorage.getItem('theme');
+        return saved ? saved === 'dark' : false;
+    });
+
+    useEffect(() => {
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    }, [isDark]);
+
     const [employmentType, setEmploymentType] = useState<EmploymentType>('employed');
     const [taxScheme, setTaxScheme] = useState<TaxScheme>('graduated');
     const [incomeRaw, setIncomeRaw] = useState('');
@@ -134,7 +143,7 @@ export function TaxDashboard() {
     const effectiveSchemeSwitched = taxScheme === 'flat8' && r?.TaxScheme === 'graduated';
 
     return (
-        <div className="min-h-screen bg-background-alt flex flex-col">
+        <div className={`min-h-screen bg-background-alt flex flex-col${isDark ? '' : ' light'}`}>
 
             <header className="flex items-center justify-between px-4 md:px-8 py-5">
                 <div className="flex items-center gap-2.5">
@@ -151,6 +160,13 @@ export function TaxDashboard() {
                     <Badge variant="muted" className="bg-black/10 text-[#6b6966] border-0 font-medium hover:cursor-not-allowed">
                         2025 Tax Tables
                     </Badge>
+                    <button
+                        onClick={() => setIsDark(d => !d)}
+                        className="ml-1 p-2 rounded-lg border border-white/10 bg-white/5 text-white/50 hover:text-white/80 hover:bg-white/10 transition-all duration-150"
+                        aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+                    >
+                        {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+                    </button>
                 </div>
             </header>
 

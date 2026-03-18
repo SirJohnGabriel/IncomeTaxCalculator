@@ -56,3 +56,14 @@ body {
   --color-dash-green-bright: #b5ef7a;
   --color-dash-green-accent: #9cdf57;
 }
+
+/* ── Light mode overrides ── */
+.light {
+  --color-white: #1a1918;
+  --color-background: #ebe9e6;
+  --color-background-alt: #f5f3f0;
+  --color-card: #ffffff;
+  --color-card-alt: #f0ede9;
+  --color-card-foreground: #1a1918;
+  --color-muted-foreground: rgba(26, 25, 24, 0.55);
+}
