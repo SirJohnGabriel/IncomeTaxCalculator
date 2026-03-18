@@ -161,6 +161,20 @@ export function TaxDashboard() {
 
                 <main className="flex-1 min-w-0 pb-12 space-y-5">
 
+                    {/* ── SEO hero text ── */}
+                    <div className="pt-2">
+                        <h1 className="text-2xl md:text-3xl font-bold text-white leading-tight">
+                            Philippine Income Tax Calculator{' '}
+                            <span className="text-dash-green">2026</span>
+                        </h1>
+                        <p className="text-white/45 text-sm mt-2 max-w-2xl leading-relaxed">
+                            Compute your Philippine income tax, SSS, PhilHealth, and Pag-IBIG contributions
+                            instantly. This calculator uses the latest BIR tax rates under the TRAIN Law
+                            (RA 10963) and updated 2025 contribution schedules to estimate your monthly
+                            take-home pay — for both employed and self-employed individuals.
+                        </p>
+                    </div>
+
                     <div className="flex gap-5 flex-wrap">
                         <InputCard
                             employmentType={employmentType}
@@ -216,6 +230,93 @@ export function TaxDashboard() {
                         <EmployerCard result={r} isSelfEmployed={isSelfEmployed} />
                         <ProjectionsCard result={r} isSelfEmployed={isSelfEmployed} />
                     </div>
+
+                    {/* ── SEO content section ── */}
+                    <section className="border-t border-white/6 pt-8 space-y-8 max-w-3xl">
+
+                        <div>
+                            <h2 className="text-base font-semibold text-white mb-2">
+                                How to Compute Income Tax in the Philippines
+                            </h2>
+                            <p className="text-white/45 text-sm leading-relaxed">
+                                Under the TRAIN Law, Philippine income tax is computed using a graduated tax table
+                                based on your annual taxable income. Your monthly basic salary is first reduced by
+                                mandatory government contributions (SSS, PhilHealth, Pag-IBIG), and the resulting
+                                taxable income is applied against the BIR withholding tax brackets. This calculator
+                                handles all of that automatically — just enter your gross monthly salary and
+                                non-taxable allowances to get your estimated take-home pay.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h2 className="text-base font-semibold text-white mb-2">
+                                2025 BIR Tax Rates (TRAIN Law)
+                            </h2>
+                            <p className="text-white/45 text-sm leading-relaxed">
+                                Employees earning up to ₱250,000 annually are exempt from income tax.
+                                Income above that is taxed at progressive rates ranging from 15% to 35%.
+                                For self-employed individuals with annual gross receipts not exceeding ₱3,000,000,
+                                the optional 8% flat tax rate on gross income (in excess of ₱250,000) may be
+                                available as an alternative to the graduated rates.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h2 className="text-base font-semibold text-white mb-2">
+                                SSS, PhilHealth, and Pag-IBIG Contributions
+                            </h2>
+                            <p className="text-white/45 text-sm leading-relaxed">
+                                Mandatory government contributions are deducted from your gross salary before
+                                tax is computed. PhilHealth contribution is 5% of monthly salary (split equally
+                                between employee and employer, capped at ₱5,000 total). SSS contributions follow
+                                a contribution table based on salary brackets. Pag-IBIG (HDMF) is 1% of salary
+                                for employees earning up to ₱1,500, and 2% above that, capped at ₱200/month
+                                for the employee share.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h2 className="text-base font-semibold text-white mb-2">
+                                Frequently Asked Questions
+                            </h2>
+                            <div className="space-y-4">
+                                <div>
+                                    <h3 className="text-sm font-medium text-white/70 mb-1">
+                                        Is this calculator accurate for 2025?
+                                    </h3>
+                                    <p className="text-white/40 text-sm leading-relaxed">
+                                        Yes. This tool uses the BIR withholding tax table effective for 2023 onwards
+                                        under the TRAIN Law, along with the latest SSS, PhilHealth, and Pag-IBIG
+                                        contribution schedules as of 2025. Results are estimates — consult a CPA
+                                        for official tax computations.
+                                    </p>
+                                </div>
+                                <div>
+                                    <h3 className="text-sm font-medium text-white/70 mb-1">
+                                        What are non-taxable allowances?
+                                    </h3>
+                                    <p className="text-white/40 text-sm leading-relaxed">
+                                        Non-taxable allowances include de minimis benefits such as rice allowance,
+                                        transportation allowance, clothing allowance, and similar benefits up to
+                                        BIR-prescribed limits. These are excluded from your taxable income, reducing
+                                        your withholding tax.
+                                    </p>
+                                </div>
+                                <div>
+                                    <h3 className="text-sm font-medium text-white/70 mb-1">
+                                        What is the difference between employed and self-employed computation?
+                                    </h3>
+                                    <p className="text-white/40 text-sm leading-relaxed">
+                                        Employed individuals have their SSS and PhilHealth contributions split
+                                        with their employer. Self-employed individuals cover all contributions
+                                        on their own and may choose between the graduated tax rates or the
+                                        optional 8% flat rate if their annual gross income does not exceed ₱3,000,000.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </section>
 
                 </main>
 
