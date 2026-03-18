@@ -34,25 +34,25 @@ body {
   --color-primary-500: #240046;
   --color-primary-600: #10002b;
 
-  --color-secondary: #2B2B2B;
+  --color-secondary: #2b2b2b;
   --color-secondary-100: #424242;
   --color-secondary-200: #363636;
   --color-secondary-300: #343434;
-  --color-secondary-400: #1C1C1C;
+  --color-secondary-400: #1c1c1c;
 
-  --color-background: #0E0E0E;
+  --color-background: #0e0e0e;
   --color-background-alt: #171513;
 
   /* ── Dashboard theme (shadcn-compatible CSS vars) ── */
-  --color-dash-bg: #E7E5E3;
+  --color-dash-bg: #e7e5e3;
   --color-card: #181614;
-  --color-card-alt: #1B1918;
+  --color-card-alt: #1b1918;
   --color-card-foreground: #ffffff;
-  --color-muted-foreground: rgba(255,255,255,0.55);
+  --color-muted-foreground: rgba(255, 255, 255, 0.55);
 
-  --color-dash-green: #7EC341;
-  --color-dash-green-light: #EAFCD2;
-  --color-dash-green-mid: #D8F8B4;
-  --color-dash-green-bright: #B5EF7A;
-  --color-dash-green-accent: #9CDF57;
+  --color-dash-green: #7ec341;
+  --color-dash-green-light: #eafcd2;
+  --color-dash-green-mid: #d8f8b4;
+  --color-dash-green-bright: #b5ef7a;
+  --color-dash-green-accent: #9cdf57;
 }

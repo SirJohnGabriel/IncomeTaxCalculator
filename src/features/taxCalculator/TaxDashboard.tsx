@@ -27,42 +27,45 @@ const PIE_SLICES_SELF = [
  * loaded in index.html and valid data-ad-client / data-ad-slot values.
  */
 function AdUnit({ slot }: { slot: string }) {
-    useEffect(() => {
-        try {
-            ((window as unknown as { adsbygoogle: unknown[] }).adsbygoogle =
-                (window as unknown as { adsbygoogle: unknown[] }).adsbygoogle || []).push({});
-        } catch (e) { console.log('AdSense error:', e); }
-    }, []);
+  useEffect(() => {
+    try {
+      ((window as unknown as { adsbygoogle: unknown[] }).adsbygoogle =
+        (window as unknown as { adsbygoogle: unknown[] }).adsbygoogle ||
+        []).push({});
+    } catch (e) {
+      console.log("AdSense error:", e);
+    }
+  }, []);
 
-    return (
-        <ins
-            className="adsbygoogle"
-            style={{ display: 'block' }}
-            data-ad-client="ca-pub-2653517967853648"
-            data-ad-slot={slot}
-            data-ad-format="auto"
-            data-full-width-responsive="true"
-        />
-    );
+  return (
+    <ins
+      className="adsbygoogle"
+      style={{ display: "block" }}
+      data-ad-client="ca-pub-2653517967853648"
+      data-ad-slot={slot}
+      data-ad-format="auto"
+      data-full-width-responsive="true"
+    />
+  );
 }
 
 /** Vertical ad sidebar — visible on desktop only. */
 function AdColumn() {
-    return (
-        <aside className="hidden md:flex w-40 shrink-0 flex-col gap-4 pt-5">
-            <AdUnit slot="1234567890" />
-            <AdUnit slot="0987654321" />
-        </aside>
-    );
+  return (
+    <aside className="hidden md:flex w-40 shrink-0 flex-col gap-4 pt-5">
+      <AdUnit slot="1234567890" />
+      <AdUnit slot="0987654321" />
+    </aside>
+  );
 }
 
 /** Horizontal ad banner — visible on mobile only. */
 function AdBanner({ slot }: { slot: string }) {
-    return (
-        <div className="md:hidden w-full">
-            <AdUnit slot={slot} />
-        </div>
-    );
+  return (
+    <div className="md:hidden w-full">
+      <AdUnit slot={slot} />
+    </div>
+  );
 }
 
 /**
@@ -109,7 +112,7 @@ export function TaxDashboard() {
     };
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
-        if (e.key === 'Enter') handleCalculate();
+        if (e.key === "Enter") handleCalculate();
     };
 
     const r = result;

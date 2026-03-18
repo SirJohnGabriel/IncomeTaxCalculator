@@ -1,11 +1,9 @@
-import { AppRouter } from './routes/AppRouter'
-import './styles/App.css'
+import { AppRouter } from "./routes/AppRouter";
+import "./styles/App.css";
 import "tailwindcss";
 
 function App() {
-  return (
-    <AppRouter />
-  )
+  return <AppRouter />;
 }
 
-export default App
+export default App;
