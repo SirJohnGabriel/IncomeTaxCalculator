@@ -1,21 +1,21 @@
 export interface Salary {
-    AnnualSalary: number;
-    AnnualNetSalary: number;
-    AnnualGrossSalary: number;
+    AnnualSalary: number | null;
+    AnnualNetSalary: number | null;
+    AnnualGrossSalary: number | null;
     
-    NetSalary: number;
-    GrossSalary: number;
-    UntaxableIncome: number;
+    NetSalary: number | null;
+    GrossSalary: number | null;
+    UntaxableIncome: number | null;
 
-    PhilhealthEmployeeContribution: number;
-    PhilhealthEmployerContribution: number;
+    PhilhealthEmployeeContribution: number | null;
+    PhilhealthEmployerContribution: number | null;
 
-    SssEmployeeContribution: number;
-    SssEmployerContribution: number;
+    SssEmployeeContribution: number | null;
+    SssEmployerContribution: number | null;
 
-    PagibigContribution: number;
-    BirContribution: number;
+    PagibigContribution: number | null;
+    BirContribution: number | null;
 
-    TotalDeductions: number;
-    EmployerContributions: number;
+    TotalDeductions: number | null;
+    EmployerContributions: number | null;
 }

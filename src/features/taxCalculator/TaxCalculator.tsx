@@ -65,11 +65,12 @@ export function TaxCalculator() {
     };
 
     return (
-        <div className="max-w-xl mx-auto px-4 pb-10 bg-background">
+        <div className="w-full px-4 pb-10 bg-background-alt">
+            <div className="flex flex-row gap-5 w-full justify-center">
             {/* <h2 className="text-2xl font-bold text-white mb-6">Income Tax Calculator</h2> */}
 
-            {/* Inputs */}
-            <div className="bg-secondary border border-secondary-400 rounded-xl p-5 mb-6 shadow-sm">
+                {/* Inputs */}
+                <div className="w-1/3 bg-secondary border border-secondary-400 rounded-xl p-5 mb-6 shadow-sm self-start">
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-100 mb-1">
                         Monthly Basic Salary
@@ -114,37 +115,35 @@ export function TaxCalculator() {
                     Calculate
                 </button>
             </div>
-
-            {/* Breakdown */}
-            {result && (
-                <div className="bg-secondary border border-secondary-400 rounded-xl p-5 shadow-sm">
+                {/* Breakdown */}
+                <div className="w-1/3 bg-secondary border border-secondary-400 rounded-xl p-5 shadow-sm">
                     <Section title="Salary Summary">
-                        <BreakdownRow label="Basic Salary" value={result.AnnualSalary / 12} />
-                        <BreakdownRow label="Non-taxable Allowances" value={result.UntaxableIncome} muted={result.UntaxableIncome === 0} />
-                        <BreakdownRow label="Gross Salary" value={result.GrossSalary} />
-                        <BreakdownRow label="Net Salary (Take-home)" value={result.NetSalary} highlight />
+                        <BreakdownRow label="Basic Salary" value={result?.AnnualSalary ? result.AnnualSalary / 12 : 0} />
+                        <BreakdownRow label="Non-taxable Allowances" value={result?.UntaxableIncome ?? 0} muted={(result?.UntaxableIncome ?? 0) === 0} />
+                        <BreakdownRow label="Gross Salary" value={result?.GrossSalary ?? 0} />
+                        <BreakdownRow label="Net Salary (Take-home)" value={result?.NetSalary ?? 0} highlight />
                     </Section>
 
                     <Section title="Deductions (Employee)">
-                        <BreakdownRow label="PhilHealth" value={result.PhilhealthEmployeeContribution} />
-                        <BreakdownRow label="SSS" value={result.SssEmployeeContribution} />
-                        <BreakdownRow label="Pag-IBIG" value={result.PagibigContribution} />
-                        <BreakdownRow label="Withholding Tax (BIR)" value={result.BirContribution} />
-                        <BreakdownRow label="Total Deductions" value={result.TotalDeductions} highlight />
+                        <BreakdownRow label="PhilHealth" value={result?.PhilhealthEmployeeContribution ?? 0} />
+                        <BreakdownRow label="SSS" value={result?.SssEmployeeContribution ?? 0} />
+                        <BreakdownRow label="Pag-IBIG" value={result?.PagibigContribution ?? 0} />
+                        <BreakdownRow label="Withholding Tax (BIR)" value={result?.BirContribution ?? 0} />
+                        <BreakdownRow label="Total Deductions" value={result?.TotalDeductions ?? 0} highlight />
                     </Section>
 
                     <Section title="Employer Contributions">
-                        <BreakdownRow label="PhilHealth" value={result.PhilhealthEmployerContribution} />
-                        <BreakdownRow label="SSS" value={result.SssEmployerContribution} />
-                        <BreakdownRow label="Total Employer Contributions" value={result.EmployerContributions} highlight />
+                        <BreakdownRow label="PhilHealth" value={result?.PhilhealthEmployerContribution ?? 0} />
+                        <BreakdownRow label="SSS" value={result?.SssEmployerContribution ?? 0} />
+                        <BreakdownRow label="Total Employer Contributions" value={result?.EmployerContributions ?? 0} highlight />
                     </Section>
 
                     <Section title="Annual Projections">
-                        <BreakdownRow label="Annual Gross Salary" value={result.AnnualGrossSalary} />
-                        <BreakdownRow label="Annual Net Salary" value={result.AnnualNetSalary} highlight />
+                        <BreakdownRow label="Annual Gross Salary" value={result?.AnnualGrossSalary ?? 0} />
+                        <BreakdownRow label="Annual Net Salary" value={result?.AnnualNetSalary ?? 0} highlight />
                     </Section>
                 </div>
-            )}
+            </div>
         </div>
     );
 }

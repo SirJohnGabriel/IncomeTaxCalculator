@@ -23,6 +23,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* ── Legacy theme (existing components) ── */
 @theme {
   --color-primary: #7b2cbf;
   --color-primary-50: #e0aaff;
@@ -40,4 +41,18 @@ body {
   --color-secondary-400: #1C1C1C;
 
   --color-background: #0E0E0E;
+  --color-background-alt: #171513;
+
+  /* ── Dashboard theme (shadcn-compatible CSS vars) ── */
+  --color-dash-bg: #E7E5E3;
+  --color-card: #181614;
+  --color-card-alt: #1B1918;
+  --color-card-foreground: #ffffff;
+  --color-muted-foreground: rgba(255,255,255,0.55);
+
+  --color-dash-green: #7EC341;
+  --color-dash-green-light: #EAFCD2;
+  --color-dash-green-mid: #D8F8B4;
+  --color-dash-green-bright: #B5EF7A;
+  --color-dash-green-accent: #9CDF57;
 }
