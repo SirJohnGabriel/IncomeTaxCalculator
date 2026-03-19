@@ -1,5 +1,5 @@
-export type EmploymentType = 'employed' | 'self-employed';
-export type TaxScheme = 'graduated' | 'flat8';
+export type EmploymentType = "employed" | "self-employed";
+export type TaxScheme = "graduated" | "flat8";
 
 export interface Salary {
   EmploymentType: EmploymentType;

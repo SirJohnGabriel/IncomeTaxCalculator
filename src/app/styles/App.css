@@ -66,4 +66,11 @@ body {
   --color-card-alt: #f0ede9;
   --color-card-foreground: #1a1918;
   --color-muted-foreground: rgba(26, 25, 24, 0.55);
+
+  /* Purple replaces green in light mode */
+  --color-dash-green: #8641c3;
+  --color-dash-green-light: #f3eafb;
+  --color-dash-green-mid: #e4cff5;
+  --color-dash-green-bright: #b57de0;
+  --color-dash-green-accent: #9d55d4;
 }

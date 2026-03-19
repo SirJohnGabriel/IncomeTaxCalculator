@@ -1,6 +1,9 @@
 /** Formats a number as Philippine peso with 2 decimal places. */
 export function fmt(value: number) {
-    return value.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  return value.toLocaleString("en-PH", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
 }
 
 /**
@@ -8,12 +11,12 @@ export function fmt(value: number) {
  * a trailing decimal point or partial decimal digits as the user types.
  */
 export function formatNumeric(raw: string): string {
-    if (!raw) return '';
-    const dotIdx = raw.indexOf('.');
-    const intPart = dotIdx >= 0 ? raw.slice(0, dotIdx) : raw;
-    const decPart = dotIdx >= 0 ? raw.slice(dotIdx) : '';
-    const formattedInt = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    return formattedInt + decPart;
+  if (!raw) return "";
+  const dotIdx = raw.indexOf(".");
+  const intPart = dotIdx >= 0 ? raw.slice(0, dotIdx) : raw;
+  const decPart = dotIdx >= 0 ? raw.slice(dotIdx) : "";
+  const formattedInt = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return formattedInt + decPart;
 }
 
 /**
@@ -21,6 +24,6 @@ export function formatNumeric(raw: string): string {
  * or null if the value contains non-numeric characters.
  */
 export function parseRaw(displayed: string): string {
-    const stripped = displayed.replace(/,/g, '');
-    return /^\d*\.?\d*$/.test(stripped) ? stripped : null!;
+  const stripped = displayed.replace(/,/g, "");
+  return /^\d*\.?\d*$/.test(stripped) ? stripped : null!;
 }
