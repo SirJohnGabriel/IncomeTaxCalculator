@@ -81,7 +81,7 @@ function SegmentedControl({ value, options, onChange }: SegmentedControlProps) {
                     key={opt.value}
                     onClick={() => onChange(opt.value)}
                     className={cn(
-                        'flex-1 flex items-center justify-center gap-1.5 py-2 px-3 text-sm font-semibold rounded-lg transition-all duration-150',
+                        'flex-1 flex items-center justify-center gap-1.5 py-2 px-3 text-sm font-semibold rounded-lg transition-all duration-150 cursor-pointer',
                         value === opt.value
                             ? 'bg-dash-green text-card shadow-sm'
                             : 'text-white/50 hover:text-white/80'
@@ -109,7 +109,7 @@ function SchemeOption({ value, selected, label, sublabel, onChange }: SchemeOpti
         <button
             onClick={() => onChange(value)}
             className={cn(
-                'flex-1 flex flex-col items-start gap-0.5 px-4 py-3 rounded-xl border transition-all duration-150 text-left',
+                'flex-1 flex flex-col items-start gap-0.5 px-4 py-3 rounded-xl border transition-all duration-150 text-left cursor-pointer',
                 selected
                     ? 'border-dash-green/60 bg-dash-green/10 text-white'
                     : 'border-white/8 bg-white/3 text-white/50 hover:border-white/20 hover:text-white/70'
@@ -138,6 +138,7 @@ interface InputCardProps {
     untaxableRaw: string;
     parsedIncome: number;
     flatRateExceeded: boolean;
+    isUnchanged: boolean;
     onEmploymentTypeChange: (val: EmploymentType) => void;
     onTaxSchemeChange: (val: TaxScheme) => void;
     onIncomeChange: (raw: string) => void;
@@ -154,6 +155,7 @@ export function InputCard({
     untaxableRaw,
     parsedIncome,
     flatRateExceeded,
+    isUnchanged,
     onEmploymentTypeChange,
     onTaxSchemeChange,
     onIncomeChange,
@@ -240,10 +242,10 @@ export function InputCard({
 
                 <button
                     onClick={onCalculate}
-                    disabled={!incomeRaw}
+                    disabled={!incomeRaw || isUnchanged}
                     className={cn(
                         'w-full font-bold text-sm py-3 rounded-xl border-none transition-all duration-150',
-                        incomeRaw
+                        incomeRaw && !isUnchanged
                             ? 'bg-dash-green text-card cursor-pointer hover:bg-dash-green-accent'
                             : 'bg-white/8 text-white/25 cursor-not-allowed'
                     )}

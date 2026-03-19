@@ -32,7 +32,7 @@ export function EmployerCard({ result: r, isSelfEmployed }: EmployerCardProps) {
                     <Separator className="bg-white/6" />
                     <DetailRow label="SSS" value={r?.SssEmployerContribution ?? 0} />
                     <Separator className="bg-white/15 my-1" />
-                    <DetailRow label="Total Contributions" value={r?.EmployerContributions ?? 0} total />
+                    <DetailRow label="Total Contributions" value={r?.EmployerContributions ?? 0} total copyable />
                 </CardContent>
             </Card>
         );

@@ -1,15 +1,14 @@
 import { useState, useEffect } from 'react';
 import type { Salary, EmploymentType, TaxScheme } from './types/Salary.types';
 import { UseTaxCalculator } from './hooks/UseTaxCalculator';
-import { Badge } from '@/shared/components/ui/badge';
-import logo from '@assets/logo_phitc_2.png';
-import { Wallet, TrendingUp, ArrowDownCircle, CalendarDays, Sun, Moon } from 'lucide-react';
+import { Wallet, TrendingUp, ArrowDownCircle, CalendarDays } from 'lucide-react';
 import { InputCard } from './components/InputCard';
 import { BreakdownChartCard } from './components/BreakdownChartCard';
 import { MetricCard } from './components/MetricCard';
 import { DeductionsCard } from './components/DeductionsCard';
 import { EmployerCard } from './components/EmployerCard';
 import { ProjectionsCard } from './components/ProjectionsCard';
+import { Header } from '@/shared/components/Header';
 
 const PIE_SLICES_EMPLOYED = [
     { name: 'Basic Salary After Taxes', color: '#7EC341' },
@@ -93,8 +92,20 @@ export function TaxDashboard() {
     const [incomeRaw, setIncomeRaw] = useState('');
     const [untaxableRaw, setUntaxableRaw] = useState('');
     const [result, setResult] = useState<Salary | null>(null);
+    const [lastCalcSnapshot, setLastCalcSnapshot] = useState<{
+        incomeRaw: string;
+        untaxableRaw: string;
+        employmentType: EmploymentType;
+        taxScheme: TaxScheme;
+    } | null>(null);
 
     const parsedIncome = parseFloat(incomeRaw) || 0;
+
+    const isUnchanged = lastCalcSnapshot !== null &&
+        lastCalcSnapshot.incomeRaw === incomeRaw &&
+        lastCalcSnapshot.untaxableRaw === untaxableRaw &&
+        lastCalcSnapshot.employmentType === employmentType &&
+        lastCalcSnapshot.taxScheme === taxScheme;
 
     // Warn when the 8% flat rate is selected but monthly income exceeds ₱250K (₱3M/year BIR limit)
     const flatRateExceeded = taxScheme === 'flat8' && parsedIncome > 250_000;
@@ -118,6 +129,7 @@ export function TaxDashboard() {
         } else {
             setResult(SelfEmployedTaxCalculator(parsedIncome, taxScheme));
         }
+        setLastCalcSnapshot({ incomeRaw, untaxableRaw, employmentType, taxScheme });
     };
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -145,30 +157,7 @@ export function TaxDashboard() {
     return (
         <div className={`min-h-screen bg-background-alt flex flex-col${isDark ? '' : ' light'}`}>
 
-            <header className="flex items-center justify-between px-4 md:px-8 py-5">
-                <div className="flex items-center gap-2.5">
-                    <img src={logo} alt="Logo" className="h-10" />
-                    <span className="text-[1.05rem] font-bold text-white tracking-tight">
-                        PH Income{' '}
-                        <span className="text-dash-green">Tax Calculator</span>
-                    </span>
-                </div>
-                <div className="flex items-center gap-2">
-                    <Badge variant="muted" className="bg-black/10 text-[#6b6966] border-0 font-medium hover:cursor-not-allowed">
-                        TRAIN Law
-                    </Badge>
-                    <Badge variant="muted" className="bg-black/10 text-[#6b6966] border-0 font-medium hover:cursor-not-allowed">
-                        2025 Tax Tables
-                    </Badge>
-                    <button
-                        onClick={() => setIsDark(d => !d)}
-                        className="ml-1 p-2 rounded-lg border border-white/10 bg-white/5 text-white/50 hover:text-white/80 hover:bg-white/10 transition-all duration-150"
-                        aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
-                    >
-                        {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-                    </button>
-                </div>
-            </header>
+            <Header isDark={isDark} onThemeToggle={() => setIsDark(d => !d)} />
 
             <AdBanner slot="1111111111" />
 
@@ -199,6 +188,7 @@ export function TaxDashboard() {
                             untaxableRaw={untaxableRaw}
                             parsedIncome={parsedIncome}
                             flatRateExceeded={flatRateExceeded}
+                            isUnchanged={isUnchanged}
                             onEmploymentTypeChange={handleEmploymentTypeChange}
                             onTaxSchemeChange={handleTaxSchemeChange}
                             onIncomeChange={setIncomeRaw}
@@ -206,7 +196,7 @@ export function TaxDashboard() {
                             onCalculate={handleCalculate}
                             onKeyDown={handleKeyDown}
                         />
-                        <BreakdownChartCard pieData={pieData} pieSlices={pieSlices} />
+                        <BreakdownChartCard pieData={pieData} pieSlices={pieSlices} isDark={isDark} />
                     </div>
 
                     <div className="flex flex-col sm:flex-row sm:flex-wrap gap-4">

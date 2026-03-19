@@ -22,13 +22,14 @@ interface PieDataEntry extends PieSlice {
 interface BreakdownChartCardProps {
     pieData: PieDataEntry[];
     pieSlices: PieSlice[];
+    isDark: boolean;
 }
 
 /**
  * Donut pie chart card showing the income breakdown (net pay, deductions, allowances).
  * Renders an empty state when no data is available.
  */
-export function BreakdownChartCard({ pieData, pieSlices }: BreakdownChartCardProps) {
+export function BreakdownChartCard({ pieData, pieSlices, isDark }: BreakdownChartCardProps) {
     const hasData = pieData.length > 0;
 
     return (
@@ -83,7 +84,7 @@ export function BreakdownChartCard({ pieData, pieSlices }: BreakdownChartCardPro
                                         {pieSlices.filter(s => pieData.some(d => d.name === s.name)).map(s => (
                                             <li key={s.name} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                                                 <span style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: s.color, flexShrink: 0 }} />
-                                                <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.72rem' }}>{s.name}</span>
+                                                <span style={{ color: isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.65)', fontSize: '0.72rem' }}>{s.name}</span>
                                             </li>
                                         ))}
                                     </ul>

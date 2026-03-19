@@ -1,51 +1,44 @@
-import { Link } from "react-router-dom";
-import logo from "@assets/logo_phitc_2.png";
+import { Link } from 'react-router-dom';
+import { Sun, Moon } from 'lucide-react';
+import { Badge } from '@/shared/components/ui/badge';
+import logo from '@assets/logo_phitc_2.png';
 
-export function Header() {
-  return (
-    <header
-      style={{
-        color: "#fff",
-        padding: "0 2rem",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        height: "64px",
-        boxShadow: "0 2px 4px rgba(0,0,0,0.3)",
-      }}
-      className="bg-background-alt"
-    >
-      <Link
-        to="/"
-        style={{
-          textDecoration: "none",
-          color: "inherit",
-          display: "flex",
-          alignItems: "center",
-          gap: "0.5rem",
-        }}
-      >
-        <img
-          src={logo}
-          alt="PH Salary Tax Calculator Logo"
-          style={{ height: "40px" }}
-        />
-        <span
-          style={{
-            fontSize: "1.25rem",
-            fontWeight: 700,
-            letterSpacing: "0.01em",
-          }}
-        >
-          <span className="text-primary"> PH Salary </span> Tax Calculator
-        </span>
-      </Link>
+interface SiteHeaderProps {
+    isDark: boolean;
+    onThemeToggle: () => void;
+}
 
-      {/* <nav style={{ display: 'flex', gap: '1.5rem', fontSize: '0.9rem' }}>
-                <Link to="/" style={{ color: '#a0aec0', textDecoration: 'none' }}>
-                    Calculator
+export function Header({ isDark, onThemeToggle }: SiteHeaderProps) {
+    return (
+        <header className="flex items-center justify-between px-4 md:px-8 py-5">
+            <Link to="/" style={{ textDecoration: 'none' }} className="flex items-center gap-2.5">
+                <img src={logo} alt="Logo" className="h-10" />
+                <span className="text-[1.05rem] font-bold text-white tracking-tight">
+                    PH Income{' '}
+                    <span className="text-dash-green">Tax Calculator</span>
+                </span>
+            </Link>
+            <div className="flex items-center gap-2">
+                <Badge
+                    variant="muted"
+                    className="bg-black/10 text-[#6b6966] border-0 font-medium cursor-pointer"
+                    onClick={() => window.open('https://lawphil.net/statutes/repacts/ra2017/ra_10963_2017.html', '_blank')}
+                >
+                    TRAIN Law
+                </Badge>
+                <Link to="/tax-tables" style={{ textDecoration: 'none' }}>
+                    <Badge variant="muted" className="bg-black/10 text-[#6b6966] border-0 font-medium cursor-pointer">
+                        2025 Tax Tables
+                    </Badge>
                 </Link>
-            </nav> */}
-    </header>
-  );
+                <button
+                    onClick={onThemeToggle}
+                    className="ml-1 p-2 rounded-lg border border-white/10 bg-white/5 text-white/50 hover:text-white/80 hover:bg-white/10 transition-all duration-150 cursor-pointer"
+                    aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+                >
+                    {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+                </button>
+            </div>
+        </header>
+    );
 }

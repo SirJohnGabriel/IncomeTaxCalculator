@@ -40,6 +40,7 @@ export function ProjectionsCard({ result: r, isSelfEmployed }: ProjectionsCardPr
                     label={isSelfEmployed ? 'Annual Net Income' : 'Annual Net Salary'}
                     value={r?.AnnualNetSalary ?? 0}
                     total
+                    copyable
                 />
             </CardContent>
         </Card>

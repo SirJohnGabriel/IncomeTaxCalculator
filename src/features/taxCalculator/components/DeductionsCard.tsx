@@ -57,7 +57,7 @@ export function DeductionsCard({ result: r, isSelfEmployed, effectiveSchemeSwitc
                     value={r?.BirContribution ?? 0}
                 />
                 <Separator className="bg-white/15 my-1" />
-                <DetailRow label="Total Deductions" value={r?.TotalDeductions ?? 0} total />
+                <DetailRow label="Total Deductions" value={r?.TotalDeductions ?? 0} total copyable />
             </CardContent>
         </Card>
     );
