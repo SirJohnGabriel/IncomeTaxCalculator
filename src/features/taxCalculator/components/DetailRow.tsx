@@ -28,7 +28,7 @@ export function DetailRow({ label, value, total, copyable }: DetailRowProps) {
                 {label}
             </span>
             <div className="flex items-center gap-1.5">
-                <span className={cn('font-mono text-sm', total ? 'text-dash-green-bright font-bold' : 'text-white/75')}>
+                <span className={cn('font-mono text-sm', total ? 'text-dash-green font-bold' : 'text-white/75')}>
                     ₱ {fmt(value)}
                 </span>
                 {copyable && (

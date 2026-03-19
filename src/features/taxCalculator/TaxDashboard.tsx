@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import type { Salary, EmploymentType, TaxScheme } from './types/Salary.types';
 import { UseTaxCalculator } from './hooks/UseTaxCalculator';
 import { Wallet, TrendingUp, ArrowDownCircle, CalendarDays } from 'lucide-react';
@@ -156,6 +157,14 @@ export function TaxDashboard() {
 
     return (
         <div className={`min-h-screen bg-background-alt flex flex-col${isDark ? '' : ' light'}`}>
+            <Helmet>
+                <title>Philippine Income Tax Calculator 2026 | BIR, SSS, PhilHealth, Pag-IBIG</title>
+                <meta name="description" content="Free Philippine income tax calculator for 2026. Compute your BIR withholding tax, net take-home pay, SSS, PhilHealth, and Pag-IBIG contributions instantly. For employed and self-employed individuals." />
+                <link rel="canonical" href="https://taxphincomecalculator.netlify.app/" />
+                <meta property="og:title" content="Philippine Income Tax Calculator 2026" />
+                <meta property="og:description" content="Free Philippine income tax calculator. Compute BIR withholding tax, SSS, PhilHealth, Pag-IBIG, and take-home pay instantly." />
+                <meta property="og:url" content="https://taxphincomecalculator.netlify.app/" />
+            </Helmet>
 
             <Header isDark={isDark} onThemeToggle={() => setIsDark(d => !d)} />
 

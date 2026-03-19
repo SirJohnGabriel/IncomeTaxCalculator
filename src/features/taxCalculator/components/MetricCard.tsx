@@ -31,7 +31,7 @@ export function MetricCard({ label, value, sub, icon, accent }: MetricCardProps)
             <CardContent className="px-5 pb-5">
                 <p className={cn(
                     'text-2xl font-bold font-mono leading-tight',
-                    accent ? 'text-dash-green-bright' : 'text-white'
+                    accent ? 'text-dash-green' : 'text-white'
                 )}>
                     ₱ {fmt(value)}
                 </p>

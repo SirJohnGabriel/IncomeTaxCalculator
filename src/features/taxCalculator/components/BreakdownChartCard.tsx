@@ -74,7 +74,7 @@ export function BreakdownChartCard({ pieData, pieSlices, isDark }: BreakdownChar
                                     <div className="bg-card border border-white/10 rounded-lg px-3 py-2 text-xs shadow-lg">
                                         <p className="text-white/60 mb-0.5">{name}</p>
                                         <p className="text-white font-mono font-bold">₱ {fmt(value)}</p>
-                                        <p className="text-dash-green-bright">{pct}%</p>
+                                        <p className="text-dash-green">{pct}%</p>
                                     </div>
                                 );
                             }} />

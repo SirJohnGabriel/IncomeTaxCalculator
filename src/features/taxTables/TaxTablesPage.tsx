@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Header } from '@/shared/components/Header';
 import { FileText, Heart, Home, Shield } from 'lucide-react';
 
@@ -122,6 +123,15 @@ export function TaxTablesPage() {
 
     return (
         <div className={`min-h-screen bg-background-alt flex flex-col${isDark ? '' : ' light'}`}>
+            <Helmet>
+                <title>2025 Philippine Tax Tables | BIR, SSS, PhilHealth, Pag-IBIG Contribution Schedules</title>
+                <meta name="description" content="Complete 2025 Philippine tax and contribution reference tables. BIR withholding tax brackets (TRAIN Law), SSS contribution schedule, PhilHealth premium rates, and Pag-IBIG (HDMF) rates." />
+                <link rel="canonical" href="https://taxphincomecalculator.netlify.app/tax-tables" />
+                <meta property="og:title" content="2025 Philippine Tax & Contribution Tables" />
+                <meta property="og:description" content="BIR withholding tax brackets, SSS contribution schedule, PhilHealth premium rates, and Pag-IBIG contribution rates for 2025." />
+                <meta property="og:url" content="https://taxphincomecalculator.netlify.app/tax-tables" />
+            </Helmet>
+
             <Header isDark={isDark} onThemeToggle={() => setIsDark(d => !d)} />
 
             <main className="flex-1 max-w-5xl mx-auto w-full px-4 md:px-8 py-6 space-y-8 pb-16">
@@ -261,7 +271,7 @@ export function TaxTablesPage() {
                 </section>
 
                 {/* ── SSS ── */}
-                <section className="bg-card border border-white/5 rounded-2xl overflow-hidden">
+                <section className="bg-card border border-white/5 rounded-2xl">
                     <div className="px-6 py-5 border-b border-white/6">
                         <div className="flex items-center gap-2 mb-1">
                             <Shield className="w-3.5 h-3.5 text-dash-green" />
@@ -276,9 +286,9 @@ export function TaxTablesPage() {
                             (MPF) is included in the EE and ER shares shown.
                         </p>
                     </div>
-                    <div className="overflow-x-auto overflow-y-auto max-h-[520px]">
+                    <div className="overflow-x-auto overflow-y-auto max-h-130">
                         <table className="w-full text-sm">
-                            <thead>
+                            <thead className="sticky top-0 bg-card z-10">
                                 <tr className="border-b border-white/6">
                                     <Th>Gross Compensation Range</Th>
                                     <Th right>MSC</Th>
@@ -298,7 +308,7 @@ export function TaxTablesPage() {
                                         <td className="px-5 py-3 text-right font-mono text-white/55 text-xs">₱ {fmt(row.msc)}</td>
                                         <td className="px-5 py-3 text-right font-mono text-white/85 font-semibold text-xs">₱ {fmt(row.ee)}</td>
                                         <td className="px-5 py-3 text-right font-mono text-white/70 text-xs">₱ {fmt(row.er)}</td>
-                                        <td className="px-5 py-3 text-right font-mono text-dash-green-bright font-bold text-xs">₱ {fmt(row.total)}</td>
+                                        <td className="px-5 py-3 text-right font-mono text-dash-green font-bold text-xs">₱ {fmt(row.total)}</td>
                                     </tr>
                                 ))}
                             </tbody>
