@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -6,9 +7,231 @@ import {
 } from "@/shared/components/ui/card";
 import { Input } from "@/shared/components/ui/input";
 import { cn } from "@/shared/lib/utils";
-import { Calculator, UserCheck, Briefcase, AlertTriangle } from "lucide-react";
+import {
+  Calculator,
+  UserCheck,
+  Briefcase,
+  AlertTriangle,
+  X,
+} from "lucide-react";
 import type { EmploymentType, TaxScheme } from "../types/Salary.types";
 import { fmt, formatNumeric, parseRaw } from "../utils";
+
+// ── Field Calculator Modal ─────────────────────────────────────────────────────
+
+type Operator = "+" | "-" | "*" | "/";
+
+const OP_SYMBOLS: Record<Operator, string> = {
+  "+": "+",
+  "-": "−",
+  "*": "×",
+  "/": "÷",
+};
+
+interface FieldCalculatorModalProps {
+  label: string;
+  rawValue: string;
+  onRawChange: (raw: string) => void;
+  onClose: () => void;
+}
+
+function FieldCalculatorModal({
+  label,
+  rawValue,
+  onRawChange,
+  onClose,
+}: FieldCalculatorModalProps) {
+  const [operator, setOperator] = useState<Operator | null>(null);
+  const [operandRaw, setOperandRaw] = useState("");
+
+  const baseValue = parseFloat(rawValue || "0") || 0;
+  const numbersDisabled = operator === null;
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+      if (numbersDisabled) return;
+      if (/^\d$/.test(e.key)) handleDigit(e.key);
+      if (e.key === ".") handleDigit(".");
+      if (e.key === "Backspace") handleBackspace();
+      if (e.key === "Enter" || e.key === "=") handleEquals();
+      if (e.key === "+") setOperator("+");
+      if (e.key === "-") setOperator("-");
+      if (e.key === "*") setOperator("*");
+      if (e.key === "/") { e.preventDefault(); setOperator("/"); }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  });
+
+  const handleOperator = (op: Operator) => {
+    setOperator(op);
+  };
+
+  const handleDigit = (d: string) => {
+    if (operator === null) return;
+    if (d === "." && operandRaw.includes(".")) return;
+    setOperandRaw((prev) => {
+      if (prev === "" && d === ".") return "0.";
+      return prev + d;
+    });
+  };
+
+  const handleBackspace = () => {
+    setOperandRaw((prev) => prev.slice(0, -1));
+  };
+
+  const computeResult = () => {
+    if (!operator || !operandRaw) return null;
+    const right = parseFloat(operandRaw);
+    if (isNaN(right)) return null;
+    switch (operator) {
+      case "+": return baseValue + right;
+      case "-": return baseValue - right;
+      case "*": return baseValue * right;
+      case "/": return right !== 0 ? baseValue / right : null;
+    }
+  };
+
+  const handleEquals = () => {
+    const result = computeResult();
+    if (result === null) return;
+    const rounded = Math.round(result * 100) / 100;
+    onRawChange(String(rounded < 0 ? 0 : rounded));
+    onClose();
+  };
+
+  const result = computeResult();
+  const displayLeft = formatNumeric(rawValue || "0");
+  const displayRight = operandRaw ? formatNumeric(operandRaw) : "";
+  const opDisplay = operator ? OP_SYMBOLS[operator] : "";
+  const previewFormatted =
+    result !== null ? formatNumeric(String(Math.round(result * 100) / 100)) : null;
+
+  const btnBase =
+    "flex items-center justify-center rounded-xl font-mono text-base font-semibold h-12 w-full transition-all duration-100 select-none";
+  const numBtnClass = cn(
+    btnBase,
+    numbersDisabled
+      ? "bg-white/5 text-white/20 cursor-not-allowed"
+      : "bg-white/8 text-white hover:bg-white/14 active:bg-white/22 cursor-pointer",
+  );
+  const opBtnClass = (active: boolean) =>
+    cn(
+      btnBase,
+      "cursor-pointer",
+      active
+        ? "bg-dash-green text-card shadow-sm"
+        : "bg-dash-green/15 text-dash-green hover:bg-dash-green/25",
+    );
+  const canConfirm = operator !== null && operandRaw !== "";
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
+      <div className="bg-card border border-white/10 rounded-2xl shadow-2xl p-5 w-72 space-y-3">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <span className="text-[0.68rem] font-semibold uppercase tracking-widest text-white/45">
+            {label}
+          </span>
+          <button
+            onClick={onClose}
+            className="text-white/40 hover:text-white/70 transition-colors cursor-pointer"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+
+        {/* Display */}
+        <div className="bg-black/30 rounded-xl px-4 py-3 min-h-[4.5rem] flex flex-col items-end justify-end gap-0.5">
+          <div className="text-white/40 text-xs font-mono truncate w-full text-right">
+            ₱{displayLeft}
+            {opDisplay && (
+              <span className="mx-1.5 text-dash-green">{opDisplay}</span>
+            )}
+            {displayRight}
+          </div>
+          <div className="text-white text-2xl font-mono font-bold">
+            ₱{previewFormatted ?? displayLeft}
+          </div>
+        </div>
+
+        {/* Operator row */}
+        <div className="grid grid-cols-4 gap-2">
+          {(["+" , "-", "*", "/"] as Operator[]).map((op) => (
+            <button
+              key={op}
+              onClick={() => handleOperator(op)}
+              className={opBtnClass(operator === op)}
+            >
+              {OP_SYMBOLS[op]}
+            </button>
+          ))}
+        </div>
+
+        {/* Number pad */}
+        <div className="grid grid-cols-3 gap-2">
+          {["7", "8", "9", "4", "5", "6", "1", "2", "3"].map((d) => (
+            <button
+              key={d}
+              onClick={() => handleDigit(d)}
+              disabled={numbersDisabled}
+              className={numBtnClass}
+            >
+              {d}
+            </button>
+          ))}
+          <button
+            onClick={() => handleDigit(".")}
+            disabled={numbersDisabled}
+            className={numBtnClass}
+          >
+            .
+          </button>
+          <button
+            onClick={() => handleDigit("0")}
+            disabled={numbersDisabled}
+            className={numBtnClass}
+          >
+            0
+          </button>
+          <button
+            onClick={handleBackspace}
+            disabled={numbersDisabled || operandRaw === ""}
+            className={cn(
+              numBtnClass,
+              !numbersDisabled && operandRaw !== ""
+                ? "bg-white/8 text-white hover:bg-white/14 cursor-pointer"
+                : "",
+            )}
+          >
+            ⌫
+          </button>
+        </div>
+
+        {/* Confirm */}
+        <button
+          onClick={handleEquals}
+          disabled={!canConfirm}
+          className={cn(
+            btnBase,
+            "w-full",
+            canConfirm
+              ? "bg-dash-green text-card hover:bg-dash-green-accent cursor-pointer"
+              : "bg-white/8 text-white/25 cursor-not-allowed",
+          )}
+        >
+          =
+        </button>
+      </div>
+    </div>
+  );
+}
 
 // ── Sub-components used only within this card ─────────────────────────────────
 
@@ -31,6 +254,7 @@ function NumericField({
   onRawChange,
   onKeyDown,
 }: NumericFieldProps) {
+  const [calcOpen, setCalcOpen] = useState(false);
   const displayed = formatNumeric(rawValue);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,37 +272,57 @@ function NumericField({
   };
 
   return (
-    <div className="flex-1 min-w-50">
-      <label className="block mb-2">
-        <span className="text-[0.72rem] font-semibold uppercase tracking-widest text-white/50">
-          {label}
-        </span>
-        {sublabel && (
-          <span className="text-[0.72rem] text-white/25 ml-1.5 normal-case font-normal">
-            {sublabel}
+    <>
+      <div className="flex-1 min-w-50">
+        <label className="block mb-2">
+          <span className="text-[0.72rem] font-semibold uppercase tracking-widest text-white/50">
+            {label}
           </span>
-        )}
-      </label>
-      <div
-        className={cn(
-          "flex items-center rounded-xl border border-white/8 bg-white/5 overflow-hidden",
-          "focus-within:border-dash-green/50 focus-within:ring-1 focus-within:ring-dash-green/30 transition-all",
-        )}
-      >
-        <span className="px-3 text-dash-green font-bold text-base select-none shrink-0">
-          ₱
-        </span>
-        <Input
-          inputMode="decimal"
-          placeholder="0.00"
-          value={displayed}
-          onChange={handleChange}
-          onKeyDown={handleKeyDown}
-          className="border-0 bg-transparent rounded-none focus-visible:ring-0 focus-visible:border-0
-                               px-0 pr-3 h-auto py-3 text-base font-mono"
-        />
+          {sublabel && (
+            <span className="text-[0.72rem] text-white/25 ml-1.5 normal-case font-normal">
+              {sublabel}
+            </span>
+          )}
+        </label>
+        <div
+          className={cn(
+            "flex items-center rounded-xl border border-white/8 bg-white/5 overflow-hidden",
+            "focus-within:border-dash-green/50 focus-within:ring-1 focus-within:ring-dash-green/30 transition-all",
+          )}
+        >
+          <span className="px-3 text-dash-green font-bold text-base select-none shrink-0">
+            ₱
+          </span>
+          <Input
+            inputMode="decimal"
+            placeholder="0.00"
+            value={displayed}
+            onChange={handleChange}
+            onKeyDown={handleKeyDown}
+            className="border-0 bg-transparent rounded-none focus-visible:ring-0 focus-visible:border-0
+                               px-0 h-auto py-3 text-base font-mono"
+          />
+          <button
+            type="button"
+            onClick={() => setCalcOpen(true)}
+            tabIndex={-1}
+            title="Open field calculator"
+            className="px-2.5 text-white/30 hover:text-dash-green transition-colors shrink-0 cursor-pointer"
+          >
+            <Calculator className="w-4 h-4" />
+          </button>
+        </div>
       </div>
-    </div>
+
+      {calcOpen && (
+        <FieldCalculatorModal
+          label={label}
+          rawValue={rawValue}
+          onRawChange={onRawChange}
+          onClose={() => setCalcOpen(false)}
+        />
+      )}
+    </>
   );
 }
 
